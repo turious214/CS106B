@@ -26,7 +26,19 @@ using namespace std;
  */
 
 void mirror(Grid<int> &nums){
-    // TODO: Your code here
+    int stageNum;
+    int changeNum;
+    int e = 1;
+    for(int i = 0; i < nums.numRows(); i++, e++){
+        for(;e < nums.numCols(); e++){
+            stageNum = nums.get(i, e);
+            changeNum = nums.get(e, i);
+            nums.set(i, e, changeNum);
+            nums.set(e, i, stageNum);
+        }
+
+        e = i + 1;
+    }
 }
 
 

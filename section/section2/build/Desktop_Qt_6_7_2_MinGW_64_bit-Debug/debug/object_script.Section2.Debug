@@ -1,0 +1,12 @@
+debug/balance.o
+debug/deduplicate.o
+debug/friendlist.o
+debug/main.o
+debug/mirror.o
+debug/reverse.o
+debug/sum.o
+debug/twice.o
+debug/MemoryDiagnostics.o
+debug/TestDriver.o
+debug/TestingGUI.o
+debug/TextUtils.o

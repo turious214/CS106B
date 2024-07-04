@@ -1,0 +1,12 @@
+release/balance.o
+release/deduplicate.o
+release/friendlist.o
+release/main.o
+release/mirror.o
+release/reverse.o
+release/sum.o
+release/twice.o
+release/MemoryDiagnostics.o
+release/TestDriver.o
+release/TestingGUI.o
+release/TextUtils.o
