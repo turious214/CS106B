@@ -99,7 +99,7 @@ CONFIG          +=  c++11
 # WARN_ON has -Wall -Wextra, add/remove a few specific warnings
 QMAKE_CXXFLAGS_WARN_ON      +=  -Werror=return-type
 QMAKE_CXXFLAGS_WARN_ON      +=  -Werror=uninitialized
-QMAKE_CXXFLAGS_WARN_ON      +=  -Wunused-parameter
+QMAKE_CXXFLAGS_WARN_ON      +=  -Wno-unused-parameter
 QMAKE_CXXFLAGS_WARN_ON      +=  -Wmissing-field-initializers
 QMAKE_CXXFLAGS_WARN_ON      +=  -Wno-old-style-cast
 QMAKE_CXXFLAGS_WARN_ON      +=  -Wno-sign-compare
