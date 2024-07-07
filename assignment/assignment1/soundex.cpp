@@ -1,9 +1,3 @@
-/*
- * TODO: remove and replace this file header comment
- * This is a .cpp file you will edit and turn in.
- * Remove starter comments and add your own
- * comments on each function and on complex code sections.
- */
 #include "testing/SimpleTest.h"
 #include "strlib.h"
 #include "filelib.h"
@@ -14,19 +8,30 @@
 #include "vector.h"
 using namespace std;
 
-/* This function is intended to return a string which
- * contains only the letter characters from the original
- * (all non-letter characters are removed)
- *
- * WARNING: The provided code is buggy!
- *
- * Use unit tests to identify which inputs to this function
- * are incorrectly handled. Then, remove this comment and
- * replace it with a description of the bug you fixed.
+/* This function takes one argument `s` and returns a boolean
+ * (true/false) value indicating whether or not the string `s`
+ * contains only alphabetic characters. A string is considered
+ * to contain only alphabetic characters if every character in
+ * the string is a letter (either uppercase or lowercase).
+ */
+// bool isStringInAlphabets(const string& s) {
+//     for (char ch : s) {
+//         if (!isalpha(ch)) {
+//             return false;
+//         }
+//     }
+
+//     return true;
+// }
+
+/* This function takes one argument `s` and returns a new string
+ * where each character in `s` is replaced by its corresponding
+ * digit based on the specified encoding table.
  */
 string removeNonLetters(string s) {
-    string result = charToString(s[0]);
-    for (int i = 1; i < s.length(); i++) {
+    string result = "";
+
+    for (int i = 0; i < s.length(); i++) {
         if (isalpha(s[i])) {
             result += s[i];
         }
@@ -34,12 +39,41 @@ string removeNonLetters(string s) {
     return result;
 }
 
+/* TODO: Replace this comment with a descriptive function
+ * header comment.
+ */
+string encoding(string s) {
+    Grid<char> encodingTable();
+    encodingTable.set(0, 0, 'A'); encodingTable.set(0, 1, 'E'); encodingTable.set(0, 2, 'I');
+    encodingTable.set(0, 3, 'O'); encodingTable.set(0, 4, 'U'); encodingTable.set(0, 5, 'H');
+    encodingTable.set(0, 6, 'W'); encodingTable.set(0, 7, 'Y');
+
+    encodingTable.set(1, 0, 'B'); encodingTable.set(1, 1, 'F'); encodingTable.set(1, 2, 'P');
+    encodingTable.set(1, 3, 'V');
+
+    encodingTable.set(2, 0, 'C'); encodingTable.set(2, 1, 'G'); encodingTable.set(2, 2, 'J');
+    encodingTable.set(2, 3, 'K'); encodingTable.set(2, 4, 'Q'); encodingTable.set(2, 5, 'S');
+    encodingTable.set(2, 6, 'X'); encodingTable.set(2, 7, 'Z');
+
+    encodingTable.set(3, 0, 'D'); encodingTable.set(3, 1, 'T');
+
+    encodingTable.set(4, 0, 'L');
+
+    encodingTable.set(5, 0, 'M'); encodingTable.set(5, 1, 'N');
+
+    encodingTable.set(6, 0, 'R');
+
+
+}
+
 
 /* TODO: Replace this comment with a descriptive function
  * header comment.
  */
 string soundex(string s) {
-    /* TODO: Fill in this function. */
+    string pureLetter = removeNonLetters(s);
+    string encoded = encoding(pureLetter);
+
     return "";
 }
 
@@ -48,21 +82,27 @@ string soundex(string s) {
  * header comment.
  */
 void soundexSearch(string filepath) {
-    // The proivded code opens the file with the given name
-    // and then reads the lines of that file into a vector.
-    ifstream in;
+    ifstream in(filepath);
     Vector<string> databaseNames;
 
     if (openFile(in, filepath)) {
-        readEntireFile(in, databaseNames);
+        databaseNames = readLines(in);
+        // readEntire(in, databaseNames);
     }
     cout << "Read file " << filepath << ", "
          << databaseNames.size() << " names found." << endl;
 
-    // The names in the database are now stored in the provided
-    // vector named databaseNames
+    string input;
+    while(input != "") {
+        input = getLine("Enter a surname (RETURN to quit): ");
+        Vector<string> result = soundex(input);
 
-    /* TODO: Fill in the remainder of this function. */
+        // if(isStringInAlphabets(input)){
+        //     Vector<string> result = soundex(input);
+        // } else {
+        //     cout << "Invalid Input" << endl;
+        // }
+    }
 }
 
 
@@ -133,6 +173,21 @@ PROVIDED_TEST("Ashcraft is not a special case") {
     EXPECT_EQUAL(soundex("Ashcraft"), "A226");
 }
 
-// TODO: add your test cases here
-
+STUDENT_TEST("Test edge cases of function removeNonLetters"){
+    string s = "";
+    string result = removeNonLetters(s);
+    EXPECT_EQUAL(result, "");
+    s = " ";
+    result = removeNonLetters(s);
+    EXPECT_EQUAL(result, "");
+    s = "123123";
+    result = removeNonLetters(s);
+    EXPECT_EQUAL(result, "");
+    s = "q$!#$b";
+    result = removeNonLetters(s);
+    EXPECT_EQUAL(result, "qb");
+    s = "$@%$a!@#$";
+    result = removeNonLetters(s);
+    EXPECT_EQUAL(result, "a");
+}
 
