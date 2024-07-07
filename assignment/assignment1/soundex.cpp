@@ -8,6 +8,16 @@
 #include "vector.h"
 using namespace std;
 
+unordered_map<char, char> ENCODINGTABLE = {
+    {'A', '0'}, {'E', '0'}, {'I', '0'}, {'O', '0'}, {'U', '0'}, {'H', '0'}, {'W', '0'}, {'Y', '0'},
+    {'B', '1'}, {'F', '1'}, {'P', '1'}, {'V', '1'},
+    {'C', '2'}, {'G', '2'}, {'J', '2'}, {'K', '2'}, {'Q', '2'}, {'S', '2'}, {'X', '2'}, {'Z', '2'},
+    {'D', '3'}, {'T', '3'},
+    {'L', '4'},
+    {'M', '5'}, {'N', '5'},
+    {'R', '6'}
+};
+
 /* This function takes one argument `s` and returns a boolean
  * (true/false) value indicating whether or not the string `s`
  * contains only alphabetic characters. A string is considered
@@ -43,36 +53,89 @@ string removeNonLetters(string s) {
  * header comment.
  */
 string encoding(string s) {
-    Grid<char> encodingTable();
-    encodingTable.set(0, 0, 'A'); encodingTable.set(0, 1, 'E'); encodingTable.set(0, 2, 'I');
-    encodingTable.set(0, 3, 'O'); encodingTable.set(0, 4, 'U'); encodingTable.set(0, 5, 'H');
-    encodingTable.set(0, 6, 'W'); encodingTable.set(0, 7, 'Y');
+    string result = charToString(toUpperCase(s).at(0));
 
-    encodingTable.set(1, 0, 'B'); encodingTable.set(1, 1, 'F'); encodingTable.set(1, 2, 'P');
-    encodingTable.set(1, 3, 'V');
+    for(char c: toUpperCase(s)) {
+        result += ENCODINGTABLE[c];
+    }
 
-    encodingTable.set(2, 0, 'C'); encodingTable.set(2, 1, 'G'); encodingTable.set(2, 2, 'J');
-    encodingTable.set(2, 3, 'K'); encodingTable.set(2, 4, 'Q'); encodingTable.set(2, 5, 'S');
-    encodingTable.set(2, 6, 'X'); encodingTable.set(2, 7, 'Z');
-
-    encodingTable.set(3, 0, 'D'); encodingTable.set(3, 1, 'T');
-
-    encodingTable.set(4, 0, 'L');
-
-    encodingTable.set(5, 0, 'M'); encodingTable.set(5, 1, 'N');
-
-    encodingTable.set(6, 0, 'R');
-
-
+    return result;
 }
 
+/* TODO: Replace this comment with a descriptive function
+ * header comment.
+ */
+string combine(string s) {
+    for(int i = 0; i < s.length();) {
+        if(s[i] == s[i + 1]){
+            s.erase(i + 1, 1);
+        } else {
+            i++;
+        }
+    }
+
+    string result = s;
+    return result;
+}
+
+/* TODO: Replace this comment with a descriptive function
+ * header comment.
+ */
+string replaceInitials(string s){
+    string result = s.erase(1, 1);
+
+    return result;
+}
+
+/* TODO: Replace this comment with a descriptive function
+ * header comment.
+ */
+string cleanZero(string s){
+    string result;
+
+    for(int i = 0; i < s.length(); i++) {
+        if(s[i] == '0') {
+            continue;
+        } else {
+            result += s[i];
+        }
+    }
+
+    return result;
+}
+
+/* TODO: Replace this comment with a descriptive function
+ * header comment.
+ */
+string fillOrCut(string s){
+    string result = s;
+
+    if(result.length() > 4){
+        result = result.substr(0, 4);
+    } else if(s.length() < 4) {
+        result.append(4 - s.length(), '0');
+    } else {
+        return result;
+    }
+
+    return result;
+}
 
 /* TODO: Replace this comment with a descriptive function
  * header comment.
  */
 string soundex(string s) {
     string pureLetter = removeNonLetters(s);
-    string encoded = encoding(pureLetter);
+    string encoded;
+
+    if(pureLetter == "") {
+        return "";
+    } else {
+        encoded = encoding(pureLetter);
+    }
+
+    string initialsEncoded = replaceInitials(encoded);
+    string cleanedEncoded = cleanZero(initialsEncoded);
 
     return "";
 }
@@ -95,7 +158,7 @@ void soundexSearch(string filepath) {
     string input;
     while(input != "") {
         input = getLine("Enter a surname (RETURN to quit): ");
-        Vector<string> result = soundex(input);
+        string result = soundex(input);
 
         // if(isStringInAlphabets(input)){
         //     Vector<string> result = soundex(input);
@@ -189,5 +252,67 @@ STUDENT_TEST("Test edge cases of function removeNonLetters"){
     s = "$@%$a!@#$";
     result = removeNonLetters(s);
     EXPECT_EQUAL(result, "a");
+    s = "Avril Lavigne";
+    result = removeNonLetters(s);
+    EXPECT_EQUAL(result, "AvrilLavigne");
 }
 
+STUDENT_TEST("Test function of encoding"){
+    string s = "kevin";
+    string result = encoding(s);
+    EXPECT_EQUAL(result, "K20105");
+    s = "Stella";
+    result = encoding(s);
+    EXPECT_EQUAL(result, "S230440");
+    s = "AvrilLavigne";
+    result = encoding(s);
+    EXPECT_EQUAL(result, "A016044010250");
+}
+
+STUDENT_TEST("Test function of combine"){
+    string s = "K20105";
+    string result = combine(s);
+    EXPECT_EQUAL(result, "K20105");
+    s = "S230440";
+    result = combine(s);
+    EXPECT_EQUAL(result, "S23040");
+    s = "A016044010250";
+    result = combine(s);
+    EXPECT_EQUAL(result, "A01604010250");
+}
+
+STUDENT_TEST("Test function of replaceInitials"){
+    string s = "K20105";
+    string result = replaceInitials(s);
+    EXPECT_EQUAL(result, "K0105");
+    s = "S23040";
+    result = replaceInitials(s);
+    EXPECT_EQUAL(result, "S3040");
+    s = "A01604010250";
+    result = replaceInitials(s);
+    EXPECT_EQUAL(result, "A1604010250");
+}
+
+STUDENT_TEST("Test function of cleanZero"){
+    string s = "K0105";
+    string result = cleanZero(s);
+    EXPECT_EQUAL(result, "K15");
+    s = "S3040";
+    result = cleanZero(s);
+    EXPECT_EQUAL(result, "S34");
+    s = "A1604010250";
+    result = cleanZero(s);
+    EXPECT_EQUAL(result, "A164125");
+}
+
+STUDENT_TEST("Test function of fillOrCut"){
+    string s = "K15";
+    string result = fillOrCut(s);
+    EXPECT_EQUAL(result, "K150");
+    s = "S34";
+    result = fillOrCut(s);
+    EXPECT_EQUAL(result, "S340");
+    s = "A164125";
+    result = fillOrCut(s);
+    EXPECT_EQUAL(result, "A164");
+}
