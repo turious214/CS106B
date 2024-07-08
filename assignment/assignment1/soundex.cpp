@@ -18,22 +18,6 @@ unordered_map<char, char> ENCODINGTABLE = {
     {'R', '6'}
 };
 
-/* This function takes one argument `s` and returns a boolean
- * (true/false) value indicating whether or not the string `s`
- * contains only alphabetic characters. A string is considered
- * to contain only alphabetic characters if every character in
- * the string is a letter (either uppercase or lowercase).
- */
-// bool isStringInAlphabets(const string& s) {
-//     for (char ch : s) {
-//         if (!isalpha(ch)) {
-//             return false;
-//         }
-//     }
-
-//     return true;
-// }
-
 /* This function takes one argument `s` and returns a new string
  * where each character in `s` is replaced by its corresponding
  * digit based on the specified encoding table.
@@ -49,8 +33,9 @@ string removeNonLetters(string s) {
     return result;
 }
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `s` and returns a new string
+ * where each character in `s` is replaced by its corresponding
+ * digit based on the specified encoding table.
  */
 string encoding(string s) {
     string result = charToString(toUpperCase(s).at(0));
@@ -62,8 +47,9 @@ string encoding(string s) {
     return result;
 }
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `s` and returns a new string
+ * where consecutive duplicate characters are merged into a single
+ * character.
  */
 string combine(string s) {
     for(int i = 0; i < s.length();) {
@@ -78,8 +64,8 @@ string combine(string s) {
     return result;
 }
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `s` and returns a new string
+ * where the second character in the string is removed.
  */
 string replaceInitials(string s){
     string result = s.erase(1, 1);
@@ -87,8 +73,8 @@ string replaceInitials(string s){
     return result;
 }
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `s` and returns a new string
+ * where all '0' characters are removed.
  */
 string cleanZero(string s){
     string result;
@@ -104,8 +90,10 @@ string cleanZero(string s){
     return result;
 }
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `s` and returns a new string
+ * where the string is either truncated to 4 characters if it is longer
+ * than 4 characters, or padded with '0' characters if it is shorter than
+ * 4 characters.
  */
 string fillOrCut(string s){
     string result = s;
@@ -121,8 +109,11 @@ string fillOrCut(string s){
     return result;
 }
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `s` and returns the Soundex code
+ * for that string. It applies a series of transformations including
+ * removing non-letter characters, encoding letters, combining
+ * duplicate encodings, replacing initials, cleaning zeros, and
+ * filling or cutting the result to ensure it is 4 characters long.
  */
 string soundex(string s) {
     string pureLetter = removeNonLetters(s);
@@ -134,38 +125,60 @@ string soundex(string s) {
         encoded = encoding(pureLetter);
     }
 
-    string initialsEncoded = replaceInitials(encoded);
+    string combinedEncoded = combine(encoded);
+    string initialsEncoded = replaceInitials(combinedEncoded);
     string cleanedEncoded = cleanZero(initialsEncoded);
+    string soundexCode = fillOrCut(cleanedEncoded);
 
-    return "";
+    return soundexCode;
 }
 
 
-/* TODO: Replace this comment with a descriptive function
- * header comment.
+/* This function takes one argument `filepath` and performs a Soundex
+ * search on the names found in the file at `filepath`. It prompts the user
+ * to enter surnames and prints out the Soundex code and matching names
+ * from the database. The function continues until the user enters an empty
+ * string.
  */
 void soundexSearch(string filepath) {
     ifstream in(filepath);
     Vector<string> databaseNames;
 
-    if (openFile(in, filepath)) {
+    if (in.is_open()) {
         databaseNames = readLines(in);
         // readEntire(in, databaseNames);
     }
     cout << "Read file " << filepath << ", "
          << databaseNames.size() << " names found." << endl;
 
-    string input;
+    string input = "None";
+    string soundexCode;
     while(input != "") {
-        input = getLine("Enter a surname (RETURN to quit): ");
-        string result = soundex(input);
+        input = getLine("\nEnter a surname (RETURN to quit): ");
 
-        // if(isStringInAlphabets(input)){
-        //     Vector<string> result = soundex(input);
-        // } else {
-        //     cout << "Invalid Input" << endl;
-        // }
+        if(input == ""){
+            continue;
+        } else {
+            soundexCode = soundex(input);
+        }
+
+        Vector<string> matchingName;
+        for(string s: databaseNames){
+            if(soundexCode == soundex(s)){
+                matchingName.add(s);
+            }
+        }
+
+        matchingName.sort();
+
+        cout << "Soundex code is "
+             << soundexCode << endl;
+
+        cout << "Matches from database: "
+             << matchingName << endl;
     }
+
+    cout << "All done!" << endl;
 }
 
 
@@ -267,6 +280,9 @@ STUDENT_TEST("Test function of encoding"){
     s = "AvrilLavigne";
     result = encoding(s);
     EXPECT_EQUAL(result, "A016044010250");
+    s = "hanrahan";
+    result = encoding(s);
+    EXPECT_EQUAL(result, "H00560005");
 }
 
 STUDENT_TEST("Test function of combine"){
@@ -279,6 +295,9 @@ STUDENT_TEST("Test function of combine"){
     s = "A016044010250";
     result = combine(s);
     EXPECT_EQUAL(result, "A01604010250");
+    s = "H00560005";
+    result = combine(s);
+    EXPECT_EQUAL(result, "H05605");
 }
 
 STUDENT_TEST("Test function of replaceInitials"){
@@ -291,6 +310,9 @@ STUDENT_TEST("Test function of replaceInitials"){
     s = "A01604010250";
     result = replaceInitials(s);
     EXPECT_EQUAL(result, "A1604010250");
+    s = "H05605";
+    result = replaceInitials(s);
+    EXPECT_EQUAL(result, "H5605");
 }
 
 STUDENT_TEST("Test function of cleanZero"){
@@ -303,6 +325,9 @@ STUDENT_TEST("Test function of cleanZero"){
     s = "A1604010250";
     result = cleanZero(s);
     EXPECT_EQUAL(result, "A164125");
+    s = "H5605";
+    result = cleanZero(s);
+    EXPECT_EQUAL(result, "H565");
 }
 
 STUDENT_TEST("Test function of fillOrCut"){
@@ -315,4 +340,7 @@ STUDENT_TEST("Test function of fillOrCut"){
     s = "A164125";
     result = fillOrCut(s);
     EXPECT_EQUAL(result, "A164");
+    s = "H565";
+    result = fillOrCut(s);
+    EXPECT_EQUAL(result, "H565");
 }
