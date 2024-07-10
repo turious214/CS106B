@@ -8,7 +8,7 @@
 #include "vector.h"
 using namespace std;
 
-unordered_map<char, char> ENCODINGTABLE = {
+const unordered_map<char, char> ENCODINGTABLE = {
     {'A', '0'}, {'E', '0'}, {'I', '0'}, {'O', '0'}, {'U', '0'}, {'H', '0'}, {'W', '0'}, {'Y', '0'},
     {'B', '1'}, {'F', '1'}, {'P', '1'}, {'V', '1'},
     {'C', '2'}, {'G', '2'}, {'J', '2'}, {'K', '2'}, {'Q', '2'}, {'S', '2'}, {'X', '2'}, {'Z', '2'},
@@ -41,7 +41,7 @@ string encoding(string s) {
     string result = charToString(toUpperCase(s).at(0));
 
     for(char c: toUpperCase(s)) {
-        result += ENCODINGTABLE[c];
+        result += ENCODINGTABLE.at(c);
     }
 
     return result;

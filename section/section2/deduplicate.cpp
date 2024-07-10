@@ -16,14 +16,6 @@
 #include "testing/TextUtils.h"
 using namespace std;
 
-/*
- * Remove Consecutive Duplicates (Debugging)
- * --------------------------------------------------------
- * Below is a buggy implementation of a function that is supposed to remove
- * consecutive duplicates from a vector. Unfortunately there are 3 bugs. Can you find
- * them and fix the code so that it passes all of the tests?
- */
-
 void deduplicate(Vector<string>& vec) {
     for (int i = 0; i < vec.size(); i++) {
         for(int e = i + 1; e < vec.size(); e++){

@@ -272,7 +272,9 @@ namespace SimpleTest {
             window->setVisible(true);
             window->requestFocus();
             // student can customize display by editing the stylesheet
-            readEntireFile("testing/styles.css", stylesheet);
+            ifstream in("testing/styles.css");
+            stylesheet = readEntire(in);
+
         }
 
         /* Show everything so there's some basic data available. */

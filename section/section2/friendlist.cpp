@@ -19,16 +19,6 @@
 #include "testing/TextUtils.h"
 using namespace std;
 
-/*
- * Friend List (Code Write)
- * ----------------------------------
- * Write a function named friendList that takes in a file name and reads
- * friend relationships from a file and writes them to a Map.
- * friendList should return the populated Map. Friendships are bi-directional.
- * The file contains one friend relationship per line, with names separated
- * by a single space. You do not have to worry about malformed entries.
- */
-
 Map<string, Vector<string>> friendList(string filename){
     return {};
 }

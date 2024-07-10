@@ -15,18 +15,33 @@
 #include "testing/TextUtils.h"
 using namespace std;
 
-/*
- * Balance (Code Write)
- * ----------------------------------
- * Write a function named checkBalance that accepts a string of
- * source code and uses a Stack to check whether the braces/parentheses
- * are balanced. Every ( or { must be closed by a } or ) in the opposite order.
- * Return the index at which an imbalance occurs, or -1 if the string is
- * balanced. If any ( or { are never closed, return the string’s length.
- */
-
 int checkBalance(string code) {
-    return 0;
+    Stack<char> sc;
+    int i;
+
+    for (i = 0; i < code.length(); i++) {
+        char c = code[i];
+
+        if (c == '(' || c == '{') {
+            sc.push(c);
+        } else if (c == ')' || c == '}') {
+            if (sc.isEmpty()) {
+                return i;
+            } else if (sc.peek() == '(' && c != ')') {
+                return i;
+            } else if (sc.peek() == '{' && c != '}') {
+                 return i;
+            } else {
+                sc.pop();
+            }
+        }
+    }
+
+    if (! sc.isEmpty()) {
+        return i;
+    } else {
+        return -1;
+    }
 }
 
 

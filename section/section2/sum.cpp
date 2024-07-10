@@ -16,15 +16,6 @@
 #include "testing/TextUtils.h"
 using namespace std;
 
-/*
- * Sum Numbers (Code Write)
- * ----------------------------------
- * Write a program to read through a given file and sum
- * all of the numbers in the file. You can assume that numbers
- * will be composed entirely of numerical digits, optionally
- * preceded by a single negative sign.
- */
-
 int sum(Vector<int> numberVector){
     int sumResult = 0;
     for(int num: numberVector){
