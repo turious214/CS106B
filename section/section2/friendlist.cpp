@@ -20,7 +20,25 @@
 using namespace std;
 
 Map<string, Vector<string>> friendList(string filename){
-    return {};
+    Map<string, Vector<string>> result;
+    ifstream in(filename);
+
+    if (! in.is_open()) {
+        return result;
+    }
+
+    Vector<string> lines = readLines(in);
+
+    for (string s : lines) {
+        Vector<string> splitedLines = stringSplit(s, " ");
+        string first = splitedLines[0];
+        string last = splitedLines[1];
+
+        result[first].add(last);
+        result[last].add(first);
+    }
+
+    return result;
 }
 
 

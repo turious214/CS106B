@@ -17,16 +17,25 @@
 #include "testing/TextUtils.h"
 using namespace std;
 
-/*
- * Twice (Code Write)
- * ----------------------------------
- * Write a function named twice that takes a vector of integers
- * and returns a set containing all the numbers in the vector
- * that appear exactly twice.
- */
-
 Set<int> twice(Vector<int> nums){
-    return {};
+    Set<int> seen;
+    Set<int> dupes;
+    Set<int> ban;
+
+    for (int num : nums) {
+        if (seen.contains(num)) {
+            if (ban.contains(num)) {
+                dupes.remove(num);
+            } else {
+                dupes.add(num);
+                ban.add(num);
+            }
+        } else {
+            seen.add(num);
+        }
+    }
+
+    return dupes;
 }
 
 
