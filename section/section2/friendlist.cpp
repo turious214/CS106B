@@ -17,6 +17,7 @@
 #include "strlib.h"
 #include "testing/SimpleTest.h"
 #include "testing/TextUtils.h"
+
 using namespace std;
 
 Map<string, Vector<string>> friendList(string filename){
